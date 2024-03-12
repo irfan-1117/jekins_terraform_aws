@@ -31,3 +31,14 @@ variable "instance_type" {
   type    = string
   default = "t2.micro"
 }
+
+variable "bucket" {
+  type = string
+  default = "mybucketforthedemo1101"
+}
+
+variable "key" {
+  type = string
+  default = "terraform.tfstate"
+  
+}
