@@ -1,0 +1,47 @@
+ pipeline {
+    agent any
+
+    environment {
+        AWS_CRED = credentials('AWS')
+        AWS_DEFAULT_REGION = "us-east-1"
+        TF_STATE_BUCKET = "mybucketforthedemo1101"
+        TF_STATE_KEY = 'terraform.tfstate'
+    }
+
+    tools {
+        terraform 'terraform'
+    }
+ 
+    stages {
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+
+        stage('Checkout SCM') {
+            steps {
+                checkout scmGit(
+                    branches: [[name: '*/main']],
+                    extensions: [],
+                    userRemoteConfigs: [[url: 'https://github.com/irfan-1117/jekins_terraform_aws.git']]
+                )
+            }
+        }
+
+        stage('init') {
+            steps {
+                script{
+                    sh 'terraform init -backend-config="bucket=${TF_STATE_BUCKET}" -backend-config="key=${TF_STATE_KEY}" -backend-config="region=us-east-1"'
+                }
+            }
+        }
+        stage('terraform  action') {
+            steps {
+                echo "Terraform action is --> ${action}"
+                sh ('terraform ${action} --auto-approve')
+            }
+        }
+    }
+    
+}
