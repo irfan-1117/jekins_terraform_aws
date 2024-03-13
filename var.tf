@@ -34,7 +34,7 @@ variable "instance_type" {
 
 variable "bucket" {
   type = string
-  default = "mybucketforthedemo1101"
+  default = "your bucket name"
 }
 
 variable "key" {
