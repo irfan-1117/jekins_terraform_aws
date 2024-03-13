@@ -3,9 +3,9 @@ pipeline {
 
     environment {
         AWS_CRED = credentials('AWS_CRED')
-        AWS_DEFAULT_REGION = ${AWS_DEFAULT_REGION}
-        TF_STATE_BUCKET = ${TF_STATE_BUCKET}
-        TF_STATE_KEY = ${TF_STATE_KEY}
+        AWS_DEFAULT_REGION = "${AWS_DEFAULT_REGION}"
+        TF_STATE_BUCKET = "${TF_STATE_BUCKET}"
+        TF_STATE_KEY = "${TF_STATE_KEY}"
     }
 
     tools {
@@ -36,13 +36,12 @@ pipeline {
             }
         }
 
-        stage('Terraform Action') {
-            environment {
-                TF_ACTION = input(message: 'Enter Terraform action (e.g., plan, apply):', parameters: [string(defaultValue: 'plan', description: 'Terraform action', name: 'ACTION')])
-            }
+        stage('terraform  action') {
             steps {
-                sh "terraform ${TF_ACTION} --auto-approve"
+                echo "Terraform action is --> ${action}"
+                sh ('terraform ${action} --auto-approve')
             }
         }
+
     }
 }
