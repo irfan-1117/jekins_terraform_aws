@@ -76,7 +76,7 @@ resource "aws_key_pair" "ssh_key" {
 # Create Web Server in Public Subnet
 resource "aws_instance" "web_server" {
   ami                         = var.ami_id
-  instance_type               = "t2.micro"
+  instance_type               = var.instance_type
   subnet_id                   = aws_subnet.public[0].id # Choose the appropriate public subnet
   associate_public_ip_address = true
   key_name                    = aws_key_pair.ssh_key.key_name # Use the created key pair for SSH access
