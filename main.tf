@@ -66,10 +66,11 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public.id
 }
 
+
 # Create Key Pair for SSH access
 resource "aws_key_pair" "ssh_key" {
   key_name   = "terraform_key"
-  public_key = file("~/.ssh/id_rsa.pub") # Change path accordingly
+  public_key = file("./id_rsa.pub") # Change path accordingly
 }
 
 # Create Web Server in Public Subnet
