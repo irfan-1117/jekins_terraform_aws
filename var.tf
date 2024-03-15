@@ -34,7 +34,7 @@ variable "instance_type" {
 
 variable "bucket" {
   type = string
-  default = "your bucket name"
+  default = "mybackendbucketforecr1117"
 }
 
 variable "key" {
