@@ -19,7 +19,7 @@ resource "aws_subnet" "public" {
   #cidr_block = var.public_subnet_cidr_blocks[count.index]
   cidr_block = var.public_subnet_cidr_blocks
   #availability_zone = element(data.aws_availability_zones.available.names, count.index)
-  availability_zone = data.aws_availability_zones.available.names
+  availability_zone = data.aws_availability_zones.available.names[0]
 
   tags = {
     #Name = "PublicSubnet-${count.index + 1}"
