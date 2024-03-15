@@ -16,6 +16,13 @@ resource "aws_security_group" "web" {
   }
 
   ingress {
+    from_port   = 8000
+    to_port     = 8000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
@@ -37,7 +44,7 @@ resource "aws_security_group" "web" {
   }
 }
 
-# Create Security Group for Database Servers
+/*# Create Security Group for Database Servers
 resource "aws_security_group" "db" {
   vpc_id = aws_vpc.main.id
 
@@ -98,4 +105,4 @@ resource "aws_security_group" "app" {
     protocol        = "-1"
     security_groups = [aws_security_group.db.id]
   }
-}
+}*/

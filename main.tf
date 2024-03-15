@@ -14,17 +14,19 @@ resource "aws_vpc" "main" {
 
 # Create public subnets
 resource "aws_subnet" "public" {
-  count             = length(var.public_subnet_cidr_blocks)
-  vpc_id            = aws_vpc.main.id
-  cidr_block        = var.public_subnet_cidr_blocks[count.index]
-  availability_zone = element(data.aws_availability_zones.available.names, count.index)
+  #count             = length(var.public_subnet_cidr_blocks)
+  vpc_id     = aws_vpc.main.id
+  cidr_block = var.public_subnet_cidr_blocks[count.index]
+  #availability_zone = element(data.aws_availability_zones.available.names, count.index)
+  availability_zone = data.aws_availability_zones.available.names
 
   tags = {
-    Name = "PublicSubnet-${count.index + 1}"
+    #Name = "PublicSubnet-${count.index + 1}"
+    Name = "PublicSubnet"
   }
 }
 
-# Create private subnets
+/*# Create private subnets
 resource "aws_subnet" "private" {
   count             = length(var.private_subnet_cidr_blocks)
   vpc_id            = aws_vpc.main.id
@@ -34,7 +36,7 @@ resource "aws_subnet" "private" {
   tags = {
     Name = "PrivateSubnet-${count.index + 1}"
   }
-}
+}*/
 
 # Create Internet Gateway
 resource "aws_internet_gateway" "gw" {
@@ -61,8 +63,9 @@ resource "aws_route_table" "public" {
 
 # Associate Public Subnets with Public Route Table
 resource "aws_route_table_association" "public" {
-  count          = length(aws_subnet.public)
-  subnet_id      = aws_subnet.public[count.index].id
+  #count          = length(aws_subnet.public)
+  #subnet_id      = aws_subnet.public[count.index].id
+  subnet_id      = aws_subnet.public.id
   route_table_id = aws_route_table.public.id
 }
 
@@ -75,9 +78,10 @@ resource "aws_key_pair" "ssh_key" {
 
 # Create Web Server in Public Subnet
 resource "aws_instance" "web_server" {
-  ami                         = var.ami_id
-  instance_type               = var.instance_type
-  subnet_id                   = aws_subnet.public[0].id # Choose the appropriate public subnet
+  ami           = var.ami_id
+  instance_type = var.instance_type
+  #subnet_id                   = aws_subnet.public[0].id # Choose the appropriate public subnet
+  subnet_id                   = aws_subnet.public.id
   associate_public_ip_address = true
   key_name                    = aws_key_pair.ssh_key.key_name # Use the created key pair for SSH access
   security_groups             = [aws_security_group.web.id]
@@ -92,7 +96,7 @@ resource "aws_instance" "web_server" {
                 EOF
 }
 
-# Create Application Server in Private Subnet
+/*# Create Application Server in Private Subnet
 resource "aws_instance" "app_server" {
   ami             = var.ami_id
   instance_type   = var.instance_type
@@ -126,6 +130,6 @@ resource "aws_instance" "db_server" {
               #!/bin/bash
               # Your database server setup script here
               EOF
-}
+}*/
 
 
