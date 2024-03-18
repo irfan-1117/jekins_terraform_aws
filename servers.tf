@@ -3,6 +3,10 @@
 # Fetch available availability zones
 data "aws_availability_zones" "available" {}
 
+locals {
+   template_file_int  = templatefile("./install.tpl", {})
+}
+
 # Create VPC
 resource "aws_vpc" "main" {
   cidr_block = var.vpc_cidr_block
@@ -86,6 +90,7 @@ resource "aws_instance" "web_server" {
   associate_public_ip_address = true
   key_name                    = aws_key_pair.ssh_key.key_name # Use the created key pair for SSH access
   security_groups             = [aws_security_group.web.id]
+  user_data = local.template_file_int
 
   tags = {
     Name = "WebServer"
