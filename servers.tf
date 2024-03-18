@@ -4,7 +4,7 @@
 data "aws_availability_zones" "available" {}
 
 locals {
-   template_file_int  = templatefile("./install.tpl", {})
+  template_file_int = templatefile("./install.tpl", {})
 }
 
 # Create VPC
@@ -19,7 +19,7 @@ resource "aws_vpc" "main" {
 # Create public subnets
 resource "aws_subnet" "public" {
   #count             = length(var.public_subnet_cidr_blocks)
-  vpc_id     = aws_vpc.main.id
+  vpc_id = aws_vpc.main.id
   #cidr_block = var.public_subnet_cidr_blocks[count.index]
   cidr_block = var.public_subnet_cidr_blocks
   #availability_zone = element(data.aws_availability_zones.available.names, count.index)
@@ -90,16 +90,16 @@ resource "aws_instance" "web_server" {
   associate_public_ip_address = true
   key_name                    = aws_key_pair.ssh_key.key_name # Use the created key pair for SSH access
   security_groups             = [aws_security_group.web.id]
-  user_data = local.template_file_int
+  user_data                   = local.template_file_int
 
   tags = {
     Name = "WebServer"
   }
 
-  user_data = <<-EOF
-              #!/bin/bash
-              # Your web server setup script here
-                EOF
+  #user_data = <<-EOF
+  #!/bin/bash
+  # Your web server setup script here
+  #EOF
 }
 
 /*# Create Application Server in Private Subnet
