@@ -16,4 +16,4 @@ curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compos
 chmod +x /usr/local/bin/docker-compose
 
 docker container run -d -p 80:80 --name webserver httpd:latest
-docker container run -d -p 8080:8080 --name appserver tomcat:latest
+# docker container run -d -p 8080:8080 --name appserver tomcat:latest
